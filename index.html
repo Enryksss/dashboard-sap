@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard de Consultoria | SAP FICO &amp; TRM</title>
+
+  <!-- Ícones e biblioteca Markdown -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.47.0/tabler-icons.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+
+  <!-- Estilos separados por responsabilidade -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/markdown.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- ── Header ──────────────────────────────────────── -->
+  <header class="top">
+    <div class="brand">
+      <span class="eyebrow">Base de conhecimento &mdash; consultoria SAP</span>
+      <h1>Dashboard FICO &amp; TRM</h1>
+    </div>
+    <div class="meta">
+      <div id="last-updated">Carregando...</div>
+      <div id="sync-status" style="font-size:11px;color:var(--ink-soft);">
+        <i class="ti ti-cloud-upload" style="font-size:13px;vertical-align:-2px;margin-right:4px;"></i>Conectando ao Google Sheets...
+      </div>
+      <div style="display:flex;gap:6px;">
+        <button id="export-btn"><i class="ti ti-download" style="font-size:13px;vertical-align:-2px;margin-right:4px;"></i>Exportar (JSON)</button>
+        <button id="import-btn"><i class="ti ti-upload"   style="font-size:13px;vertical-align:-2px;margin-right:4px;"></i>Importar</button>
+        <input type="file" id="import-file" accept=".json" style="display:none;">
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Navegação por abas ───────────────────────────── -->
+  <nav class="tabs">
+    <button class="active" data-area="overview">  <i class="ti ti-layout-dashboard"></i>Visão geral</button>
+    <button data-area="fico">                      <i class="ti ti-receipt-2"></i>SAP FICO</button>
+    <button data-area="trm">                       <i class="ti ti-currency-dollar"></i>SAP TRM</button>
+    <button data-area="integration">               <i class="ti ti-sitemap"></i>Integração &amp; processos</button>
+    <button data-area="activate">                  <i class="ti ti-rocket"></i>SAP Activate</button>
+  </nav>
+
+  <!-- ── Painel: Visão geral ──────────────────────────── -->
+  <section class="panel active" id="panel-overview">
+    <div class="overview-section">
+      <h2>Progresso por área</h2>
+      <div class="overview-grid">
+
+        <div class="area-card" data-area="fico">
+          <span class="tag">Financial accounting &amp; controlling</span>
+          <h3>SAP FICO</h3>
+          <p>Contabilidade financeira (FI), controladoria (CO), ativos fixos, integração com MM/SD e fechamento contábil.</p>
+          <div class="progress-row">
+            <div class="progress-track"><div class="progress-fill" id="fill-fico" style="width:0%"></div></div>
+            <span class="progress-label" id="label-fico">0%</span>
+          </div>
+        </div>
+
+        <div class="area-card" data-area="trm">
+          <span class="tag">Treasury &amp; risk management</span>
+          <h3>SAP TRM</h3>
+          <p>Instrumentos financeiros, posições, valuation, hedge accounting, gestão de risco e relatórios.</p>
+          <div class="progress-row">
+            <div class="progress-track"><div class="progress-fill" id="fill-trm" style="width:0%"></div></div>
+            <span class="progress-label" id="label-trm">0%</span>
+          </div>
+        </div>
+
+        <div class="area-card" data-area="integration">
+          <span class="tag">Cross-module</span>
+          <h3>Integração &amp; processos</h3>
+          <p>Pontos de integração FICO ↔ TRM, fluxos de ponta a ponta, governança, glossário e templates.</p>
+          <div class="progress-row">
+            <div class="progress-track"><div class="progress-fill" id="fill-integration" style="width:0%"></div></div>
+            <span class="progress-label" id="label-integration">0%</span>
+          </div>
+        </div>
+
+        <div class="area-card" data-area="activate">
+          <span class="tag">Metodologia de projeto</span>
+          <h3>SAP Activate</h3>
+          <p>Fases, deliverables, papéis e melhores práticas do framework SAP Activate aplicados a FICO e TRM.</p>
+          <div class="progress-row">
+            <div class="progress-track"><div class="progress-fill" id="fill-activate" style="width:0%"></div></div>
+            <span class="progress-label" id="label-activate">0%</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="overview-section">
+      <h2>Estatísticas</h2>
+      <div class="stats-row">
+        <div class="stat-box"><div class="num" id="stat-total">0</div><div class="lbl">Total de tópicos</div></div>
+        <div class="stat-box"><div class="num" id="stat-done">0</div><div class="lbl">Concluídos</div></div>
+        <div class="stat-box"><div class="num" id="stat-progress">0</div><div class="lbl">Em andamento</div></div>
+        <div class="stat-box"><div class="num" id="stat-todo">0</div><div class="lbl">A fazer</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Painel: SAP FICO ─────────────────────────────── -->
+  <section class="panel" id="panel-fico">
+    <div class="area-header">
+      <h2>SAP FICO</h2>
+      <p>Contabilidade financeira e controladoria: estrutura organizacional, GL, AP, AR, ativos fixos, fechamento contábil e integração com módulos logísticos.</p>
+    </div>
+    <div class="toolbar">
+      <input type="text" placeholder="Buscar tópicos em FICO..." data-search="fico">
+      <select data-filter="fico">
+        <option value="all">Todos os status</option>
+        <option value="todo">A fazer</option>
+        <option value="andamento">Em andamento</option>
+        <option value="concluido">Concluído</option>
+      </select>
+      <button class="btn-add" data-add="fico"><i class="ti ti-plus"></i>Novo tópico</button>
+    </div>
+    <div class="topic-list" id="list-fico"></div>
+  </section>
+
+  <!-- ── Painel: SAP TRM ─────────────────────────────── -->
+  <section class="panel" id="panel-trm">
+    <div class="area-header">
+      <h2>SAP TRM</h2>
+      <p>Gestão de tesouraria e riscos: instrumentos financeiros, posições, valuation, hedge accounting, gestão de risco e relatórios.</p>
+    </div>
+    <div class="toolbar">
+      <input type="text" placeholder="Buscar tópicos em TRM..." data-search="trm">
+      <select data-filter="trm">
+        <option value="all">Todos os status</option>
+        <option value="todo">A fazer</option>
+        <option value="andamento">Em andamento</option>
+        <option value="concluido">Concluído</option>
+      </select>
+      <button class="btn-add" data-add="trm"><i class="ti ti-plus"></i>Novo tópico</button>
+    </div>
+    <div class="topic-list" id="list-trm"></div>
+  </section>
+
+  <!-- ── Painel: Integração & Processos ──────────────── -->
+  <section class="panel" id="panel-integration">
+    <div class="area-header">
+      <h2>Integração &amp; processos</h2>
+      <p>Pontos de conexão entre FICO e TRM, fluxos ponta a ponta, glossário comum, governança de projeto e templates reutilizáveis.</p>
+    </div>
+    <div class="toolbar">
+      <input type="text" placeholder="Buscar tópicos em Integração..." data-search="integration">
+      <select data-filter="integration">
+        <option value="all">Todos os status</option>
+        <option value="todo">A fazer</option>
+        <option value="andamento">Em andamento</option>
+        <option value="concluido">Concluído</option>
+      </select>
+      <button class="btn-add" data-add="integration"><i class="ti ti-plus"></i>Novo tópico</button>
+    </div>
+    <div class="topic-list" id="list-integration"></div>
+  </section>
+
+  <!-- ── Painel: SAP Activate ────────────────────────── -->
+  <section class="panel" id="panel-activate">
+    <div class="area-header">
+      <h2>SAP Activate</h2>
+      <p>Metodologia ágil de implementação SAP: fases (Discover → Prepare → Explore → Realize → Deploy → Run), deliverables-chave, papéis e encaixe de FICO/TRM em cada etapa.</p>
+    </div>
+    <div class="toolbar">
+      <input type="text" placeholder="Buscar tópicos em SAP Activate..." data-search="activate">
+      <select data-filter="activate">
+        <option value="all">Todos os status</option>
+        <option value="todo">A fazer</option>
+        <option value="andamento">Em andamento</option>
+        <option value="concluido">Concluído</option>
+      </select>
+      <button class="btn-add" data-add="activate"><i class="ti ti-plus"></i>Novo tópico</button>
+    </div>
+    <div class="topic-list" id="list-activate"></div>
+  </section>
+
+  <!-- ── Rodapé ───────────────────────────────────────── -->
+  <footer class="app-foot">
+    Dashboard SAP FICO &amp; TRM &mdash; dados sincronizados com Google Sheets
+  </footer>
+
+</div>
+
+<!-- Scripts: ordem importa — data antes de sheets, sheets antes de render, render antes de app -->
+<script src="js/data.js"></script>
+<script src="js/sheets.js"></script>
+<script src="js/render.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>

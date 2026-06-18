@@ -1,0 +1,49 @@
+/* ═══════════════════════════════════════════════════════
+   VARIÁVEIS GLOBAIS — cores, fontes, espaçamentos
+   Para mudar o visual do dashboard, edite apenas aqui.
+   ═══════════════════════════════════════════════════════ */
+
+:root {
+  /* Paleta base */
+  --bg:           #F6F4EF;
+  --surface:      #FFFFFF;
+  --ink:          #1F2A24;
+  --ink-soft:     #5C6B62;
+  --line:         #E1DDD3;
+
+  /* Cores por área */
+  --accent-fico:      #3C6E52;
+  --accent-fico-soft: #E5EFE8;
+  --accent-trm:       #6B4F2A;
+  --accent-trm-soft:  #F1E8DC;
+  --accent-int:       #3A4D6B;
+  --accent-int-soft:  #E6EBF2;
+  --accent-act:       #6E4B8A;
+  --accent-act-soft:  #EEE6F2;
+
+  /* Status */
+  --ok:      #3C6E52;
+  --warn:    #B5853A;
+  --pending: #B5853A;
+  --notdone: #A7423B;
+
+  /* Tipografia */
+  --serif: "Source Serif Pro", Georgia, serif;
+  --sans:  "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono:  "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+
+  /* Forma */
+  --radius:    10px;
+  --radius-lg: 16px;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}

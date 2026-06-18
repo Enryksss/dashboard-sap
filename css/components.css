@@ -1,0 +1,138 @@
+/* ═══════════════════════════════════════════════════════
+   COMPONENTS — cards de tópico, badges de status, ações
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Lista de tópicos ───────────────────────────────── */
+.topic-list { display: flex; flex-direction: column; gap: 10px; }
+
+/* ── Card individual ────────────────────────────────── */
+.topic-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: box-shadow .15s;
+}
+.topic-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+
+/* ── Cabeçalho do card ──────────────────────────────── */
+.topic-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 16px;
+  cursor: pointer;
+  user-select: none;
+}
+.topic-head .chev {
+  font-size: 16px;
+  color: var(--ink-soft);
+  transition: transform .2s;
+  flex-shrink: 0;
+}
+.topic-card.open .topic-head .chev { transform: rotate(90deg); }
+
+.topic-head .title-wrap { flex: 1; min-width: 0; }
+.topic-head .title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.topic-head .sub {
+  margin: 0;
+  font-size: 11px;
+  color: var(--ink-soft);
+  font-family: var(--mono);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Badge de status ────────────────────────────────── */
+.status-badge {
+  font-size: 10px;
+  font-family: var(--mono);
+  padding: 3px 9px;
+  border-radius: 100px;
+  cursor: pointer;
+  flex-shrink: 0;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.status-badge[data-status="todo"]      { background: #F0EBE3; color: var(--ink-soft); }
+.status-badge[data-status="andamento"] { background: #FDF3E0; color: var(--warn); }
+.status-badge[data-status="concluido"] { background: var(--accent-fico-soft); color: var(--ok); }
+
+/* ── Corpo expandido do card ────────────────────────── */
+.topic-body {
+  display: none;
+  padding: 0 16px 16px;
+  border-top: 1px solid var(--line);
+}
+.topic-card.open .topic-body { display: block; }
+
+/* ── Textarea de edição ─────────────────────────────── */
+.topic-body textarea {
+  width: 100%;
+  min-height: 160px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink);
+  background: var(--bg);
+  resize: vertical;
+  outline: none;
+  line-height: 1.6;
+  margin-top: 4px;
+}
+.topic-body textarea:focus { border-color: var(--ink-soft); }
+
+/* ── Barra de ações do card ─────────────────────────── */
+.row-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+.save-hint { font-size: 11px; color: var(--ink-soft); font-family: var(--mono); }
+.btn-del {
+  font-size: 11px;
+  font-family: var(--mono);
+  padding: 5px 10px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--notdone);
+  cursor: pointer;
+  transition: background .15s;
+}
+.btn-del:hover { background: #FDF0EF; }
+
+/* ── Alternância editar / visualizar ────────────────── */
+.topic-body .mode-toggle {
+  display: flex;
+  gap: 6px;
+  margin-top: 12px;
+  margin-bottom: 4px;
+}
+.topic-body .mode-toggle button {
+  font-size: 11px;
+  font-family: var(--mono);
+  padding: 4px 12px;
+  border-radius: 100px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+.topic-body .mode-toggle button.active {
+  background: var(--ink);
+  color: #fff;
+  border-color: transparent;
+}
